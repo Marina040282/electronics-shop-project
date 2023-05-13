@@ -1,4 +1,7 @@
 import csv
+import os
+
+path = r'C:/Users/Марина/PycharmProjects/pythonProject_4_OPP/electronics_shop_project/src/items.csv'
 
 class Item:
     """
@@ -19,17 +22,20 @@ class Item:
         self.price = price
         self.quantity = quantity
 
-        # Геттер для fullname
-    @property
-    def name_(self):
-        """Возвращает имя сотрудника. К атрибуту можно обращаться без ()."""
-        return f'{self.name}'
 
-    @name_.setter
-    def name_(self, name):
+    @property
+    def name(self):
+        """Возвращает имя сотрудника. К атрибуту можно обращаться без ()."""
+        return f'{self.__name}'
+
+
+    @name.setter
+    def name(self, name_):
         """Метод срабатывает при операции присваивания."""
-        if len(name) < 10:
-            self.name = name
+        if len(name_) < 10:
+            self.__name = name_
+        else:
+            raise Exception('Длина наименования товара превышает 10 символов')
 
 
     def calculate_total_price(self) -> float:
@@ -47,18 +53,19 @@ class Item:
         self.price = self.pay_rate * self.price
         return self.price
 
-
-    def instantiate_from_csv(self):
-        with open('C:/Users/Марина/PycharmProjects/pythonProject_4_OPP/electronics_shop_project/src/items.csv', 'r') as r_file:
+    @classmethod
+    def instantiate_from_csv(cls):
+        with open(path, 'r') as r_file:
             my_file = csv.reader(r_file, delimiter=",")
             line_number = 0
             for line in my_file:
                 line_number += 1
                 if line_number != 1:
-                    self.name, self.price, self.quantity = line
-                    self.all.append(line)
-        return self.all
+                    cls.name, cls.price, cls.quantity = line
+                    cls.all.append(line)
+        return cls.all
 
-    def string_to_number(self, number) -> int:
+    @staticmethod
+    def string_to_number( number) -> int:
         return int(float(number))
 
