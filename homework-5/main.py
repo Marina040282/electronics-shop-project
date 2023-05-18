@@ -1,4 +1,5 @@
-from src.keyboard import Keyboard
+from electronics_shop_project.src.keyboard import KeyBoard
+
 
 if __name__ == '__main__':
     kb = KeyBoard('Dark Project KD87A', 9600, 5)
