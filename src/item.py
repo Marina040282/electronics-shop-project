@@ -1,7 +1,19 @@
 import csv
 import os
+from csv import DictReader
 
 path = r'C:/Users/Марина/PycharmProjects/pythonProject_4_OPP/electronics_shop_project/src/items.csv'
+
+class InstantiateCSVError(Exception):
+    """
+    Класс для обработки собственных исключений
+    """
+    def __init__(self, *args, **kwargs):
+        self.message = args[0] if args else "Файл item.csv поврежден"
+
+    def __str__(self):
+        return self.message
+
 
 class Item:
     """
@@ -55,15 +67,20 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
-        with open(path, 'r') as r_file:
-            my_file = csv.reader(r_file, delimiter=",")
-            line_number = 0
-            for line in my_file:
-                line_number += 1
-                if line_number != 1:
-                    cls.name, cls.price, cls.quantity = line
-                    cls.all.append(line)
-        return cls.all
+        try:
+            with open(path, 'r') as r_file:
+                my_file = DictReader(r_file)
+                if len(my_file.fieldnames) < 3:
+                    raise InstantiateCSVError
+                line_number = 0
+                for line in my_file:
+                    line_number += 1
+                    if line_number != 1:
+                        cls.name, cls.price, cls.quantity = line
+                        cls.all.append(line)
+            return cls.all
+        except FileNotFoundError as e:
+            print(f'Отсутствует файл item.csv')
 
     @staticmethod
     def string_to_number( number) -> int:

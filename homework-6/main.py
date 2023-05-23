@@ -1,4 +1,4 @@
-from src.item import Item
+from electronics_shop_project.src.item import Item
 
 if __name__ == '__main__':
     # Файл items.csv отсутствует.
