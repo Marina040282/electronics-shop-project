@@ -2,6 +2,10 @@
 import pytest
 from electronics_shop_project.src.item import Item
 
+@pytest.fixture
+def item():
+    return Item('Смартфон', 10000, 20)
+
 
 def test_calculate_total_price():
     assert Item.calculate_total_price(20000, 5) == 10000
@@ -41,3 +45,7 @@ def test_str():
     assert str(item) == 'Смартфон'
 
 
+def test_init_instantiate_csv_error(args=None):
+    """Тест ошибки инита"""
+    with pytest.raises(TypeError):
+        args[0] = "Файл item.csv поврежден"
